@@ -1,11 +1,13 @@
 import os
-import pandas as pd
+import time  # Library for tracking execution time
 import numpy as np
+import pandas as pd
 import joblib  # Library for saving and loading models
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
-print("⏳ 1️⃣ Loading and preparing real estate dataset...")
+print("⏳ 1️⃣ Loading and preparing real estate dataset for Regression...")
 
 # Automatically detect the current directory where this script is located
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -94,23 +96,41 @@ y = df['obj_purchasePrice']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 print(f"X_train shape: {X_train.shape} | y_train shape: {y_train.shape}")
 
-print("⏳ 2️⃣ Training the Random Forest model (This might take a few seconds)...")
-# Instantiate and train Random Forest model
-rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
+print("⏳ 2️⃣ Training the Random Forest Regressor model...")
+# ⏱️ Start tracking training execution time
+start_time = time.time()
+
+# Instantiate and train Random Forest Regressor (utilizing all CPU cores via n_jobs=-1)
+rf_model = RandomForestRegressor(n_estimators=100, random_state=42, n_jobs=-1)
 rf_model.fit(X_train, y_train)
 
-# Calculate accuracy metrics
-train_accuracy = rf_model.score(X_train, y_train)
-test_accuracy = rf_model.score(X_test, y_test)
-
-print(f"🏋️ Random Forest model accuracy on Training data: {train_accuracy * 100:.2f}%")
-print(f"🧪 Random Forest model accuracy on Test data: {test_accuracy * 100:.2f}%")
+# ⏱️ End tracking training execution time
+end_time = time.time()
+duration = end_time - start_time
+print(f"🌲 Random Forest Model Training finished successfully in {duration:.2f} seconds!")
 print("-" * 60)
 
-print("⏳ 3️⃣ Creating the .joblib file for Random Forest model...")
+print("⏳ 3️⃣ Evaluating model performance metrics (Regression Focus)...")
+# Predict actual prices on test data
+y_pred = rf_model.predict(X_test)
+
+# 1. Calculate final R² Score on the actual Euro scale
+r2_result = r2_score(y_test, y_pred)
+
+# 2. Calculate real-world error metrics (Euro Scale)
+mse_result = mean_squared_error(y_test, y_pred)
+mae_result = mean_absolute_error(y_test, y_pred)
+
+print("\n🚀 ====== FINAL REGRESSION MODEL PERFORMANCE METRICS ======")
+print(f"📊 R² Score (Coefficient of Determination): {r2_result * 100:.2f}%")
+print(f"📉 MSE (Mean Squared Error): {mse_result:,.2f} EUR²")
+print(f"📊 MAE (Mean Absolute Error): ±{mae_result:,.2f} EUR")
+print("===========================================================\n")
+
+print("⏳ 4️⃣ Creating the .joblib file for Random Forest model...")
 # Save and serialize the trained Random Forest model inside the current 'model' directory
 model_filename = os.path.join(current_dir, 'rf_estate_model.joblib')
 joblib.dump(rf_model, model_filename)
 
-print(f"✅ Random Forest model successfully exported to:\n   {model_filename}")
-print("🚀 The model is now frozen and ready for instant deployment!")
+print(f"✅ Random Forest regression model successfully exported to:\n   {model_filename}")
+print("🚀 The final model is fully frozen and deployed for live property predictions!")

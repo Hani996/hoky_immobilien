@@ -124,7 +124,7 @@ start_time = time.time()
 
 # Instantiate the model with verbose=2 to actively display progress in the terminal
 rf_model_v2 = RandomForestRegressor(
-    n_estimators=150,
+    n_estimators=600,
     max_depth=15,
     min_samples_split=5,
     min_samples_leaf=2,
