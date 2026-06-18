@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Preisvorhersage - HOKY Immobilien</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">
+    <span>HOKY</span>
+    <small>IMMOBILIEN</small>
+  </div>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#" class="active">Preisrechner</a>
+    <a href="#">Immobilien-Infos</a>
+    <a href="#">Datenschutz</a>
+    <a href="#">Kontakt</a>
+  </nav>
+</header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Immobilien Preisvorhersage</h1>
+      <p>Hier können Sie den geschätzten Immobilienpreis einfach und schnell berechnen.</p>
+    </div>
+  </section>
+
+  <section class="calculator-section">
+    <div class="card">
+      <h2>Preis berechnen</h2>
+
+      <form id="predictionForm">
+        <label for="obj_livingSpace">Wohnfläche (qm)</label>
+        <input type="number" id="obj_livingSpace" name="obj_livingSpace" value="120" step="0.1" required>
+
+        <label for="obj_yearConstructed">Baujahr</label>
+        <input type="number" id="obj_yearConstructed" name="obj_yearConstructed" value="1995" required>
+
+        <label for="geo_plz">Postleitzahl (PLZ)</label>
+        <input type="number" id="geo_plz" name="geo_plz" value="30159" required>
+
+        <label for="geo_krs">Landkreis / Stadt (geo_krs)</label>
+        <select class="location" id="geo_krs" name="geo_krs" style="color: black; text-align-last: center;" required>
+          <option value="" disabled selected>Wählen Sie einen Landkreis</option>
+        </select>
+
+        <label for="obj_regio3">Stadtteil / Ortsteil (obj_regio3)</label>
+        <select class="location" id="obj_regio3" name="obj_regio3" style="color: black; text-align-last: center;" required>
+          <option value="" disabled selected>Zuerst Landkreis wählen</option>
+        </select>
+
+        <label>Anzahl der Zimmer</label>
+        <div class="switch-field">
+          <input type="radio" id="radio-rooms-1" name="obj_noRooms" value="1">
+          <label for="radio-rooms-1">1</label>
+
+          <input type="radio" id="radio-rooms-2" name="obj_noRooms" value="2">
+          <label for="radio-rooms-2">2</label>
+
+          <input type="radio" id="radio-rooms-3" name="obj_noRooms" value="3">
+          <label for="radio-rooms-3">3</label>
+
+          <input type="radio" id="radio-rooms-4" name="obj_noRooms" value="4" checked>
+          <label for="radio-rooms-4">4</label>
+
+          <input type="radio" id="radio-rooms-5" name="obj_noRooms" value="5">
+          <label for="radio-rooms-5">5</label>
+        </div>
+
+        <label for="obj_condition">Zustand der Immobilie</label>
+        <select class="location" id="obj_condition" name="obj_condition" style="color: black; text-align-last: center;">
+          <option value="well_kept" selected>Gepflegt (well_kept)</option>
+          <option value="first_time_use">Erstbezug (first_time_use)</option>
+          <option value="refurbished">Saniert (refurbished)</option>
+          <option value="need_of_renovation">Renovierungsbedürftig (need_of_renovation)</option>
+          <option value="no_information">Keine Angabe (no_information)</option>
+        </select>
+
+        <button class="submit" type="submit">
+          Preis Schätzen
+        </button>
+      </form>
+
+      <div id="uiEstimatedPrice" class="result" style="text-align: center; display: none;">
+        <h2 id="priceDisplay" style="margin-top: 20px;"></h2>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Complete structured dictionary generated from price_clean.csv
+    const stadtteileData = {"Ammerland_Kreis": ["Bad_Zwischenahn", "Rastede", "Edewecht", "Apen", "Westerstede", "other"], "Aurich_Kreis": ["Aurich", "Norden", "other", "Großefehn", "Dornum", "Krummhörn", "Südbrookmerland", "Wiesmoor", "Ihlow", "Hage", "Großheide"], "Braunschweig": ["other"], "Celle_Kreis": ["other", "Celle", "Winsen_Aller", "Hambühren"], "Cloppenburg_Kreis": ["other", "Barßel", "Saterland", "Friesoythe"], "Cuxhaven_Kreis": ["other", "Cuxhaven", "Loxstedt", "Langen", "Schiffdorf"], "Delmenhorst": ["other"], "Diepholz_Kreis": ["other", "Stuhr", "Weyhe"], "Emden": ["other"], "Emsland_Kreis": ["other", "Papenburg", "Herzlake", "Lingen_Ems", "Haselünne", "Meppen", "Haren_Ems", "Langen"], "Friesland_Kreis": ["Zetel", "Wangerland", "Varel", "other", "Schortens", "Jever"], "Gifhorn_Kreis": ["other", "Gifhorn", "Rühen", "Wittingen", "Leiferde"], "Goslar_Kreis": ["other", "Bad_Harzburg", "Goslar", "Seesen"], "Grafschaft_Bentheim_Kreis": ["other", "Bad_Bentheim", "Nordhorn"], "Göttingen_Kreis": ["other", "Göttingen", "Bovenden"], "Hameln_Pyrmont_Kreis": ["Hameln", "Hessisch_Oldendorf", "Bad_Münder_am_Deister", "Bad_Pyrmont", "Coppenbrügge", "other", "Salzhemmendorf"], "Hannover": ["other"], "Hannover_Kreis": ["Neustadt_am_Rübenberge", "Barsinghausen", "Garbsen", "Wunstorf", "Isernhagen", "Springe", "Burgdorf", "Wedemark", "Ronnenberg", "Langenhagen", "other", "Burgwedel", "Laatzen", "Lehrte", "Uetze", "Seelze", "Gehrden", "Hemmingen", "Pattensen"], "Harburg_Kreis": ["other", "Buchholz_in_der_Nordheide", "Seevetal", "Rosengarten", "Winsen_Luhe", "Neu_Wulmstorf"], "Heidekreis": ["other", "Walsrode", "Schneverdingen"], "Helmstedt_Kreis": ["other", "Helmstedt", "Königslutter_am_Elm", "Schoningen"], "Hildesheim_Kreis": ["other", "Alfeld_Leine", "Bad_Salzdetfurth", "Hildesheim", "Sarstedt"], "Holzminden_Kreis": ["other"], "Leer_Kreis": ["Leer_Ostfriesland", "Rhauderfehn", "Weener", "other", "Moormerland", "Westoverledingen", "Bunde", "Ostrhauderfehn", "Jemgum"], "Lüchow_Dannenberg_Kreis": ["other", "Dannenberg_Elbe"], "Lüneburg_Kreis": ["other", "Lüneburg"], "Nienburg_Weser_Kreis": ["other"], "Northeim_Kreis": ["other", "Einbeck", "Bad_Gandersheim"], "Oldenburg_Kreis": ["other", "Wildeshausen", "Ganderkesee", "Wardenburg", "Hatten", "Großenkneten"], "Oldenburg_Oldenburg": ["other", "Kreyenbrück"], "Osnabrück": ["other"], "Osnabrück_Kreis": ["other", "Melle", "Fürstenau", "Bad_Essen"], "Osterholz_Kreis": ["Schwanewede", "Worpswede", "Osterholz_Scharmbeck", "Lilienthal", "other", "Ritterhude"], "Osterode_am_Harz_Kreis": ["other", "Osterode_am_Harz", "Herzberg_am_Harz"], "Peine_Kreis": ["other", "Vechelde", "Peine", "Ilsede"], "Rotenburg_Wümme_Kreis": ["other", "Zeven", "Bremervörde", "Scheeßel", "Rotenburg_Wümme"], "Salzgitter": ["other", "Lebenstedt", "Bad"], "Schaumburg_Kreis": ["other", "Rinteln", "Bückeburg", "Bad_Nenndorf", "Auetal", "Stadthagen"], "Stade_Kreis": ["other", "Stade", "Buxtehude"], "Uelzen_Kreis": ["other", "Uelzen", "Bad_Bevensen"], "Vechta_Kreis": ["other"], "Verden_Kreis": ["other", "Achim", "Verden_Aller"], "Wesermarsch_Kreis": ["other", "Nordenham", "Butjadingen", "Elsfleth", "Jade"], "Wilhelmshaven": ["other"], "Wittmund_Kreis": ["other", "Wittmund", "Esens"], "Wolfenbüttel_Kreis": ["other", "Wolfenbüttel", "Burgdorf", "Achim"], "Wolfsburg": ["other"]};
+
+    const landkreisSelect = document.getElementById('geo_krs');
+    const stadtteilSelect = document.getElementById('obj_regio3');
+
+    // Populate the Landkreis dropdown on page load
+    Object.keys(stadtteileData).forEach(lk => {
+        const option = document.createElement('option');
+        option.value = lk;
+        option.textContent = lk.replace(/_/g, ' '); // Clean interface display
+        landkreisSelect.appendChild(option);
+    });
+
+    // Event listener to dynamically filter Stadtteil options based on selection
+    landkreisSelect.addEventListener('change', function() {
+        const selectedLandkreis = this.value;
+        const stadtteile = stadtteileData[selectedLandkreis] || ["other"];
+
+        // Clear previous options
+        stadtteilSelect.innerHTML = '';
+
+        // Fill with matching Stadtteil items
+        stadtteile.forEach(stadtteil => {
+            const option = document.createElement('option');
+            option.value = stadtteil;
+            option.textContent = stadtteil.replace(/_/g, ' '); // Clean display
+            if(stadtteil === "other") option.selected = true;
+            stadtteilSelect.appendChild(option);
+        });
+    });
+
+    // Form submit pipeline
+    document.getElementById('predictionForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            
+            const resultDiv = document.getElementById('uiEstimatedPrice');
+            const priceDisplay = document.getElementById('priceDisplay');
+            
+            if (response.ok) {
+                const resData = await response.json();
+                priceDisplay.innerText = `Geschätzter Wert: ${resData.predicted_price}`;
+                resultDiv.style.display = 'block';
+            } else {
+                priceDisplay.innerText = 'Fehler bei der Berechnung.';
+                resultDiv.style.display = 'block';
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
+  </script>
+</body>
+</html>
