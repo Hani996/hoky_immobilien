@@ -22,6 +22,9 @@ conn = sqlite3.connect(db_filename)
 
 df = pd.read_sql_query(f"SELECT * FROM {table_name}", conn)
 
+# Ensure that the 'obj_telekomInternetProductAvailable' column is treated as an object (string) type for safe processing
+df['obj_telekomInternetProductAvailable'] = df['obj_telekomInternetProductAvailable'].astype(object)
+
 # 3. Always close the database connection when done
 conn.close()
 
