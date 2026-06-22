@@ -6,7 +6,30 @@ import joblib  # Library for saving and loading models
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+import sqlite3
 
+# Define the database and table names
+table_name = 'house_prices'
+
+# 1. Automatically detect the directory where this script is located
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
+# 2. Go one step back (..) to the root, then enter data/db/prices.db
+db_filename = os.path.normpath(os.path.join(current_dir, "../data/db/prices.db"))
+
+print(f"🗄️ Connecting to database at: {db_filename}")
+
+# 3. Connect to the existing SQLite database using the absolute path
+conn = sqlite3.connect(db_filename)
+
+df = pd.read_sql_query(f"SELECT * FROM {table_name}", conn)
+
+# Ensure that the 'obj_telekomInternetProductAvailable' column is treated as an object (string) type for safe processing
+df['obj_telekomInternetProductAvailable'] = df['obj_telekomInternetProductAvailable'].astype(object)
+
+# 3. Always close the database connection when done
+conn.close()
+""" 
 print("⏳ 1️⃣ Loading and preparing real estate dataset for Regression...")
 
 # Automatically detect the current directory where this script is located
@@ -17,6 +40,11 @@ data_path = os.path.normpath(os.path.join(current_dir, "../data/price_clean.csv"
 
 print(f"📂 Reading data from: {data_path}")
 
+
+
+# Read file and filter columns
+df = pd.read_csv(data_path)
+ """
 features_to_keep = [
     'obj_purchasePrice',
     'obj_livingSpace',
@@ -27,9 +55,6 @@ features_to_keep = [
     'obj_regio3',
     'obj_noRooms'
 ]
-
-# Read file and filter columns
-df = pd.read_csv(data_path)
 df = df[df.columns.intersection(features_to_keep)].copy()
 
 print(f"📊 Initial data shape: {df.shape}")

@@ -80,6 +80,28 @@
           <option value="no_information">Keine Angabe (no_information)</option>
         </select>
 
+        <label for="obj_firingTypes">Heizungsart</label>
+        <select class="location" id="obj_firingTypes" name="obj_firingTypes" style="color: black; text-align-last: center;">
+          <option value="gas" selected>Gas</option>
+          <option value="oil">Öl</option>
+          <option value="district_heating">Fernwärme</option>
+          <option value="electricity">Elektro</option>
+          <option value="geothermal">Erdwärme</option>
+          <option value="natural_gas_light">Erdgas (leicht)</option>
+          <option value="solar_heating:gas">Solar + Gas</option>
+          <option value="wood">Holz</option>
+          <option value="gas:wood">Gas + Holz</option>
+          <option value="environmental_thermal_energy">Umweltwärme</option>
+        </select>
+
+        <label>Keller vorhanden?</label>
+        <div class="switch-field">
+          <input type="radio" id="cellar-yes" name="obj_cellar" value="y">
+          <label for="cellar-yes">Ja</label>
+          <input type="radio" id="cellar-no" name="obj_cellar" value="n" checked>
+          <label for="cellar-no">Nein</label>
+        </div>
+
         <button class="submit" type="submit">
           Preis Schätzen
         </button>
