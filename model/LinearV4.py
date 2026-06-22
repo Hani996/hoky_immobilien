@@ -67,8 +67,14 @@ X_numeric = df.select_dtypes(include=[np.number, bool]).copy()
 cols_to_drop = ['obj_purchasePrice', 'obj_purchasePrice_per_qm', 'obj_regio1']
 X = X_numeric.drop(columns=[col for col in cols_to_drop if col in X_numeric.columns], errors='ignore')
 
-# Fill any remaining missing values (NaN) with 0 for calculation safety
-X = X.fillna(0)
+
+# تعويض القيم المفقودة في الأعمدة الرقمية بالقيمة الوسطية (Median) لكل عمود
+for col in X.columns:
+    # التأكد من أن العمود رقمي وليس متغير فئوي (Dummy) مرمز بـ 0 و 1
+    if X[col].dtype in [np.float64, np.int64]:
+        mean_value = X[col].mean()
+        X[col] = X[col].fillna(mean_value)
+
 
 # Split data into 80% training and 20% testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
