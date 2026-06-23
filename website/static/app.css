@@ -228,16 +228,25 @@ nav a:hover {
 
 input,
 select {
-  width: 100%;
-  padding: 14px;
+  width: 420px;
+  padding: 14px 44px;
   font-size: 18px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  text-align: center;
+  color: #d40012;
+  
 }
+
+/* select option{
+} */
+
+
 
 .switch-field {
   display: flex;
-  gap: 8px;
+  justify-content: center;
+  gap: 22px;
   margin-bottom: 10px;
 }
 
@@ -248,9 +257,11 @@ select {
 .switch-field label {
   background: white;
   border: 1px solid #ccc;
-  padding: 12px 22px;
+  padding: 10px;
+  width: 70px;
   cursor: pointer;
   margin: 0;
+
 }
 
 .switch-field input:checked + label {
@@ -277,6 +288,8 @@ select {
   color: #d40012;
   border-radius: 4px;
   text-decoration: solid;
+  display: flex;
+  justify-content: center;
 }
 
 
