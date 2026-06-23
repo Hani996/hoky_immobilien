@@ -3,95 +3,108 @@
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
 ![Flask](https://img.shields.io/badge/framework-Flask-orange)
 
-## What this project does
+HOKY Immobilien is a research / utility project that predicts real-estate purchase prices and provides visualization tools for properties in Lower Saxony (Niedersachsen), Germany. It combines feature engineering, model training, saved model artifacts, a Flask web UI, and supporting scripts for data conversion and mapping.
 
-HOKY Immobilien is a real-estate price prediction and visualization project for properties in Lower Saxony, Germany. It combines a trained machine learning pipeline, a Flask web application, and supporting scripts for data preparation, analysis, and mapping.
+**This README focuses on developer setup, running the app, and where to look when extending the project.**
 
-The repository includes:
+**Key benefits**
+- Local property valuation engine for Niedersachsen.
+- Reproducible training and inference pipelines for regression models (linear, RF, XGBoost).
+- Interactive Flask UI plus command-line prediction utilities for quick integration and testing.
 
-- A Flask-based web UI that predicts property prices based on feature input.
-- A model training pipeline that cleans data, engineers features, and compares candidate regression models.
-- Data utilities for CSV-to-SQLite conversion, SQL querying, and district-level price mapping.
-- Example notebooks and saved model artifacts for quick experimentation.
+**Notable files**
+- [website/app.py](website/app.py) — Flask web app + REST predict endpoint (`/predict`).
+- [scripts/predict.py](scripts/predict.py) — Example CLI predictor using a saved joblib pipeline.
+- [scripts/train_model.py](scripts/train_model.py) — Training pipeline and feature engineering.
+- [scripts/niedersachsen_map.py](scripts/niedersachsen_map.py) — Produce county-level heatmaps.
+- [data/price_clean.csv](data/price_clean.csv) — Cleaned dataset used for training (if present).
+- `model/` — Directory containing saved models such as `xgb_estate_model.joblib`, `rf_estate_model.joblib`, etc.
 
-## Why this project is useful
+## Quick start
 
-- Provides a local property valuation engine for Niedersachsen real estate.
-- Demonstrates feature engineering and model training for price prediction.
-- Includes an interactive web app and reusable prediction scripts.
-- Supports rapid iteration on models and data preprocessing.
-
-## Key features
-
-- `website/app.py`: Flask app serving price prediction pages and API endpoint.
-- `scripts/train_model.py`: Train or retrain the predictive pipeline from `data/price_clean.csv`.
-- `scripts/predict.py`: Run example property predictions with the trained model.
-- `scripts/niedersachsen_map.py`: Generate an interactive price heatmap for Niedersachsen.
-- `scripts/csv_to_sqlite.py` and `scripts/query_sqlite.py`: Convert and query listing data via SQLite.
-
-## Getting started
-
-### Prerequisites
-
+Prerequisites
 - Python 3.11 or newer
-- `pip`
-- A local clone of this repository
+- git, pip, and a terminal
 
-### Install dependencies
+Recommended (create a virtual environment):
 
-```bash
+Windows (PowerShell):
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-### Run the web app
+macOS / Linux:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+Run the web app (development):
 
 ```bash
 python website/app.py
 ```
 
-Then open `http://127.0.0.1:5000` in your browser.
+Open http://127.0.0.1:5000 in your browser. The Flask app exposes a POST API at `/predict` that accepts JSON with property fields and returns a predicted price.
 
-### Run the sample predictor script
+Example curl request to `/predict` (replace fields as needed):
+
+```bash
+curl -X POST http://127.0.0.1:5000/predict \
+	-H "Content-Type: application/json" \
+	-d '{"obj_livingSpace":120, "obj_noRooms":4, "obj_yearConstructed":1995, "geo_krs":"Hannover", "obj_regio3":"other", "geo_plz":30159, "obj_condition":"well_kept", "obj_firingTypes":"gas"}'
+```
+
+Run the example CLI predictor:
 
 ```bash
 python scripts/predict.py
 ```
 
-This script loads the saved pipeline from `model/price_model.joblib` and prints example predictions.
-
-### Train the model from scratch
+Train a model from cleaned data (example):
 
 ```bash
 python scripts/train_model.py --data data/price_clean.csv --out model/price_model.joblib
 ```
 
-This command trains the best candidate model on the cleaned dataset and saves the pipeline to `model/price_model.joblib`.
+Notes on model files
+- The Flask app currently loads a bundled model from `model/xgb_estate_model.joblib` by default (see [website/app.py](website/app.py)). Some scripts expect `model/price_model.joblib` — confirm which artifact you intend to use and update paths accordingly.
 
-## Repository structure
+## Project structure
 
-- `website/`: Flask app, templates, and static frontend resources.
-- `scripts/`: Training, prediction, data conversion, mapping, and email utilities.
-- `model/`: Saved model artifacts and model source files.
-- `data/`: Cleaned dataset and raw CSV data.
-- `notebooks/`: Analysis and visualization notebooks.
+- `website/` — Flask app, templates, static assets (frontend pages for prediction and info).
+- `scripts/` — Utilities: training, prediction, CSV-to-SQLite, mapping, and email processors.
+- `model/` — Saved joblib model bundles and model source files.
+- `data/` — Cleaned CSVs and raw source data.
+- `notebooks/` — Jupyter/py notebooks for exploratory analysis and visualization.
 
 ## Where to get help
-
-- Open an issue in this repository for bugs or feature requests.
-- Review the source code in `website/app.py` and `scripts/train_model.py` for behavior details.
-- Use the notebooks in `notebooks/` for data exploration and model insights.
+- Open an issue in the repository for bugs or feature requests.
+- Inspect the example notebooks in `notebooks/` for exploratory analysis and debugging hints.
+- Look at the Flask view and feature engineering in [website/app.py](website/app.py) and `model/train_model.py` to trace inference and training logic.
 
 ## Contributing
+- Contributions are welcome via issues and pull requests. Small, focused changes are easiest to review.
+- If you add features, update `requirements.txt` and include a short note about the new dependency in your PR description.
+- If you plan larger changes, open an issue first to discuss the design.
 
-Contributions are welcome via issues and pull requests. If you add features or fix bugs, keep changes focused and document any new dependencies.
+## Maintainers
+- Maintained by the repository owner. Please open issues or submit pull requests.
 
-If you want to extend the project, a good entry point is:
-
-- `scripts/train_model.py` for model improvements
-- `website/app.py` for web UI enhancements
-- `scripts/niedersachsen_map.py` for map or visualization updates
+## License
+- This repository does not include a LICENSE file by default. Add a LICENSE before using or redistributing the project commercially.
 
 ---
 
-*This README was generated to help developers get started with the HOKY Immobilien repository.*
+If you'd like, I can also:
+- Add a `CONTRIBUTING.md` template and a basic `LICENSE` file.
+- Run the web app or sample scripts in the workspace virtualenv to verify behavior.
+
+*Generated by a repository review to help developers get started.*
