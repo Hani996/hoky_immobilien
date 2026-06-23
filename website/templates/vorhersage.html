@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Preisvorhersage - HOKY Immobilien</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}?v=2">
 </head>
 <body>
 
@@ -14,17 +15,16 @@
   </div>
 
   <nav>
-    <a href="#">Home</a>
-    <a href="#" class="active">Preisrechner</a>
-    <a href="#">Immobilien-Infos</a>
-    <a href="#">Datenschutz</a>
-    <a href="#">Kontakt</a>
+    <a href="/">Home</a>
+    <a href="/mehrÜberImmobilien">Immobilien-Infos</a>
+    <a href="/datenschutz">Datenschutz</a>
+    <a href="/kontakt">Kontakt</a>
   </nav>
 </header>
 
   <section class="hero">
     <div class="hero-content">
-      <h1>Immobilien Preisvorhersage</h1>
+      <h1 id="preisrechner">Immobilien Preisvorhersage</h1>
       <p>Hier können Sie den geschätzten Immobilienpreis einfach und schnell berechnen.</p>
     </div>
   </section>
@@ -34,55 +34,47 @@
       <h2>Preis berechnen</h2>
 
       <form id="predictionForm">
-        <label for="obj_livingSpace">Wohnfläche (qm)</label>
+        <label for="obj_livingSpace">Wohnfläche (qm) *</label>
         <input type="number" id="obj_livingSpace" name="obj_livingSpace" value="120" step="0.1" required>
 
-        <label for="obj_yearConstructed">Baujahr</label>
+        <label for="obj_yearConstructed">Baujahr *</label>
         <input type="number" id="obj_yearConstructed" name="obj_yearConstructed" value="1995" required>
 
-        <label for="geo_plz">Postleitzahl (PLZ)</label>
+        <label for="geo_plz">Postleitzahl (PLZ) *</label>
         <input type="number" id="geo_plz" name="geo_plz" value="30159" required>
 
-        <label for="geo_krs">Landkreis / Stadt (geo_krs)</label>
-        <select class="location" id="geo_krs" name="geo_krs" style="color: black; text-align-last: center;" required>
+        <label for="geo_krs">Landkreis / Stadt *</label>
+        <select class="location" id="geo_krs" name="geo_krs" required>
           <option value="" disabled selected>Wählen Sie einen Landkreis</option>
         </select>
 
-        <label for="obj_regio3">Stadtteil / Ortsteil (obj_regio3)</label>
-        <select class="location" id="obj_regio3" name="obj_regio3" style="color: black; text-align-last: center;" required>
+        <label for="obj_regio3">Stadtteil *</label>
+        <select class="location" id="obj_regio3" name="obj_regio3" required>
           <option value="" disabled selected>Zuerst Landkreis wählen</option>
         </select>
 
-        <label>Anzahl der Zimmer</label>
-        <div class="switch-field">
-          <input type="radio" id="radio-rooms-1" name="obj_noRooms" value="1">
-          <label for="radio-rooms-1">1</label>
-
-          <input type="radio" id="radio-rooms-2" name="obj_noRooms" value="2">
-          <label for="radio-rooms-2">2</label>
-
-          <input type="radio" id="radio-rooms-3" name="obj_noRooms" value="3">
-          <label for="radio-rooms-3">3</label>
-
-          <input type="radio" id="radio-rooms-4" name="obj_noRooms" value="4" checked>
-          <label for="radio-rooms-4">4</label>
-
-          <input type="radio" id="radio-rooms-5" name="obj_noRooms" value="5">
-          <label for="radio-rooms-5">5</label>
-        </div>
+        <label for="obj_noRooms">Anzahl der Zimmer *</label>
+          <input
+              type="number"
+              id="obj_noRooms"
+              name="obj_noRooms"
+              value="3"
+              min="1"
+              step="0.5"
+              required>
 
         <label for="obj_condition">Zustand der Immobilie</label>
-        <select class="location" id="obj_condition" name="obj_condition" style="color: black; text-align-last: center;">
-          <option value="well_kept" selected>Gepflegt (well_kept)</option>
-          <option value="first_time_use">Erstbezug (first_time_use)</option>
-          <option value="refurbished">Saniert (refurbished)</option>
-          <option value="need_of_renovation">Renovierungsbedürftig (need_of_renovation)</option>
-          <option value="no_information">Keine Angabe (no_information)</option>
+        <select class="location" id="obj_condition" name="obj_condition">
+          <option value="well_kept">Gepflegt</option>
+          <option value="first_time_use">Erstbezug</option>
+          <option value="refurbished">Saniert</option>
+          <option value="need_of_renovation">Renovierungsbedürftig</option>
+          <option value="no_information" selected>Keine Angabe</option>
         </select>
 
         <label for="obj_firingTypes">Heizungsart</label>
-        <select class="location" id="obj_firingTypes" name="obj_firingTypes" style="color: black; text-align-last: center;">
-          <option value="gas" selected>Gas</option>
+        <select class="location" id="obj_firingTypes" name="obj_firingTypes">
+          <option value="gas">Gas</option>
           <option value="oil">Öl</option>
           <option value="district_heating">Fernwärme</option>
           <option value="electricity">Elektro</option>
@@ -92,9 +84,10 @@
           <option value="wood">Holz</option>
           <option value="gas:wood">Gas + Holz</option>
           <option value="environmental_thermal_energy">Umweltwärme</option>
+          <option value="no_information" selected>Keine Angabe</option>
         </select>
 
-        <label>Keller vorhanden?</label>
+        <label>Keller vorhanden? *</label>
         <div class="switch-field">
           <input type="radio" id="cellar-yes" name="obj_cellar" value="y">
           <label for="cellar-yes">Ja</label>
@@ -102,16 +95,19 @@
           <label for="cellar-no">Nein</label>
         </div>
 
-        <button class="submit" type="submit">
-          Preis Schätzen
-        </button>
+        <div class="result">
+          <button class="submit" type="submit">
+            Preis Schätzen
+          </button>
+        </div>
       </form>
 
-      <div id="uiEstimatedPrice" class="result" style="text-align: center; display: none;">
-        <h2 id="priceDisplay" style="margin-top: 20px;"></h2>
+      <div id="uiEstimatedPrice" class="result" style="text-align: center; display: none; max-width: 420px;">
+        <h2 id="priceDisplay" style="margin-top: 30px;"></h2>
       </div>
     </div>
   </section>
+
 
   <script>
     // Complete structured dictionary generated from price_clean.csv
@@ -165,7 +161,15 @@
             
             if (response.ok) {
                 const resData = await response.json();
-                priceDisplay.innerText = `Geschätzter Wert: ${resData.predicted_price}`;
+                priceDisplay.innerHTML = `
+                    <div style="font-size:26px; color:#555;">
+                        Geschätzter Immobilienwert
+                    </div>
+
+                    <div style="margin-top:20px; font-size:50px; color:#d40012; font-weight:bold;">
+                        ${resData.predicted_price}
+                    </div>
+                `;
                 resultDiv.style.display = 'block';
             } else {
                 priceDisplay.innerText = 'Fehler bei der Berechnung.';

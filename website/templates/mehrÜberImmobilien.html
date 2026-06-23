@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>mehrÜberImmobilien - HOKY Immobilien</title>
-  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}?v=2">
 </head>
 
 <body>
@@ -15,11 +16,10 @@
   </div>
 
   <nav>
-    <a href="index.html">Home</a>
-    <a href="mehrÜberImmobilien.html" class="active">Immobilien-Infos</a>
-    <!-- <a href="prediction.html">Preisrechner</a> -->
-    <a href="datenschutz.html">Datenschutz</a>
-    <a href="kontakt.html">Kontakt</a>
+    <a href="/">Home</a>
+    <a href="/mehrÜberImmobilien" class="active">Immobilien-Infos</a>
+    <a href="/datenschutz">Datenschutz</a>
+    <a href="/kontakt">Kontakt</a>
   </nav>
 </header>
 
@@ -29,6 +29,11 @@
     <p>
       Wichtige Informationen, Statistiken und </p><p>Entwicklungen rund um den Immobilienmarkt möglichst gut zu verstehen.
     </p>
+    <a href="/niedersachsen_price_heatmap"
+      target="_blank"
+      class="hero-button">
+      Interaktive Preiskarte Niedersachsens
+    </a>
   </div>
 </section>
 

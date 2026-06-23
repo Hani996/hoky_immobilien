@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>Datenschutz - HOKY Immobilien</title>
-  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}?v=2">
+
 </head>
 
 <body>
@@ -15,11 +17,10 @@
   </div>
 
   <nav>
-    <a href="index.html">Home</a>
-    <a href="mehrÜberImmobilien.html">Immobilien-Infos</a>
-    <!-- <a href="prediction.html">Preisrechner</a> -->
-    <a href="datenschutz.html" class="active">Datenschutz</a>
-    <a href="kontakt.html">Kontakt</a>
+    <a href="/">Home</a>
+    <a href="/mehrÜberImmobilien">Immobilien-Infos</a>
+    <a href="/datenschutz" class="active">Datenschutz</a>
+    <a href="/kontakt">Kontakt</a>
   </nav>
 </header>
 

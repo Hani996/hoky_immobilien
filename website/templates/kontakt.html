@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Kontakt - HOKY Immobilien</title>
-  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}?v=2">
 </head>
 
 <body>
@@ -15,11 +16,10 @@
   </div>
 
   <nav>
-    <a href="index.html">Home</a>
-    <!-- <a href="prediction.html">Preisrechner</a> -->
-    <a href="mehrÜberImmobilien.html">Immobilien-Infos</a>
-    <a href="datenschutz.html">Datenschutz</a>
-    <a href="kontakt.html" class="active">Kontakt</a>
+    <a href="/">Home</a>
+    <a href="/mehrÜberImmobilien">Immobilien-Infos</a>
+    <a href="/datenschutz">Datenschutz</a>
+    <a href="/kontakt" class="active">Kontakt</a>
   </nav>
 </header>
 
@@ -34,7 +34,7 @@
       Informationen zu Ihrer Immobilie schnell und unkompliziert zu übermitteln.
     </p>
     <a class="mail-button"
-       href="mailto:hoky.immobilien@gmail.com?subject=Anfrage%20zur%20Immobilienbewertung&body=Liebe hoky-immobilien team,%0A%0A%0AIch interessiere mich für eine Immobilienbewertung.%0A%0AImmobilienadresse__________%0AWohnfläche%3A%20__________%0AZimmeranzahl%3A%20__________%0A%0AVielen Dank.%0A%0AMit freundlichen Grüßen">
+       href="mailto:hoky.immobilien@gmail.com?subject=Anfrage%20zur%20Immobilienbewertung&body=Liebe%20HOKY%20Immobilien%20Team%2C%0A%0AIch%20interessiere%20mich%20f%C3%BCr%20eine%20Immobilienbewertung%20und%20%C3%BCbermittle%20Ihnen%20die%20folgenden%20Angaben%3A%0A%0A---%20Objektdaten%20---%0A%0AWohnfl%C3%A4che%20(m%C2%B2)%3A%20%0AZimmeranzahl%3A%20%0ABaujahr%3A%20%0APostleitzahl%3A%20%0ALandkreis%20%2F%20Stadt%3A%20%0AStadtteil%3A%20%0A%0A---%20Ausstattung%20---%0A%0AZustand%20der%20Immobilie%20(Gepflegt%20%2F%20Saniert%20%2F%20Renovierungsbed%C3%BCrftig%20%2F%20Erstbezug%20%2F%20Keine%20Angabe)%3A%20%0AHeizungsart%20(Gas%20%2F%20%C3%96l%20%2F%20Fernw%C3%A4rme%20%2F%20Elektro%20%2F%20Erdw%C3%A4rme%20%2F%20Holz%20%2F%20Sonstige)%3A%20%0AKeller%20vorhanden%20(Ja%20%2F%20Nein)%3A%20%0A%0AVielen%20Dank%20f%C3%BCr%20Ihre%20Anfrage.%0A%0AMit%20freundlichen%20Gr%C3%BC%C3%9Fen">
       E-Mail schreiben
     </a>
   </div>
