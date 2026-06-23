@@ -14,11 +14,9 @@ HOKY Immobilien is a research / utility project that predicts real-estate purcha
 
 **Notable files**
 - [website/app.py](website/app.py) — Flask web app + REST predict endpoint (`/predict`).
-- [scripts/predict.py](scripts/predict.py) — Example CLI predictor using a saved joblib pipeline.
-- [scripts/train_model.py](scripts/train_model.py) — Training pipeline and feature engineering.
-- [scripts/niedersachsen_map.py](scripts/niedersachsen_map.py) — Produce county-level heatmaps.
-- [data/price_clean.csv](data/price_clean.csv) — Cleaned dataset used for training (if present).
-- `model/` — Directory containing saved models such as `xgb_estate_model.joblib`, `rf_estate_model.joblib`, etc.
+- `scripts/` — utilities such as `csv_to_sqlite.py`, `query_sqlite.py`, `niedersachsen_map.py`, and email processors.
+- [data/price_clean.csv](data/price_clean.csv) — Cleaned dataset commonly used for training (if present).
+- `model/` — Directory containing saved models and modeling scripts (e.g. `RandomForestV2.py`, `XGboost_model.py`, and joblib artifacts).
 
 ## Quick start
 
@@ -62,16 +60,28 @@ curl -X POST http://127.0.0.1:5000/predict \
 	-d '{"obj_livingSpace":120, "obj_noRooms":4, "obj_yearConstructed":1995, "geo_krs":"Hannover", "obj_regio3":"other", "geo_plz":30159, "obj_condition":"well_kept", "obj_firingTypes":"gas"}'
 ```
 
-Run the example CLI predictor:
+Run model examples or utilities
+
+- Run the Flask app for inference (recommended):
 
 ```bash
-python scripts/predict.py
+python website/app.py
 ```
 
-Train a model from cleaned data (example):
+- Run a model example script (training/inference demos):
 
 ```bash
-python scripts/train_model.py --data data/price_clean.csv --out model/price_model.joblib
+python model/RandomForestV2.py
+# or
+python model/XGboost_model.py
+```
+
+- Utility scripts (CSV/DB/mapping):
+
+```bash
+python scripts/csv_to_sqlite.py
+python scripts/query_sqlite.py
+python scripts/niedersachsen_map.py
 ```
 
 Notes on model files
@@ -88,7 +98,7 @@ Notes on model files
 ## Where to get help
 - Open an issue in the repository for bugs or feature requests.
 - Inspect the example notebooks in `notebooks/` for exploratory analysis and debugging hints.
-- Look at the Flask view and feature engineering in [website/app.py](website/app.py) and `model/train_model.py` to trace inference and training logic.
+- Look at the Flask view and model feature engineering in [website/app.py](website/app.py) and scripts in the `model/` directory (e.g. `RandomForestV2.py`, `XGboost_model.py`).
 
 ## Contributing
 - Contributions are welcome via issues and pull requests. Small, focused changes are easiest to review.
