@@ -38,40 +38,64 @@
 </section>
 
 <section class="page-section">
+  
   <div class="card text-card">
-    <div class="card text-card">
+
+    <section class="stats-section">
+
+  <div class="stats-card">
+    <h2>Statistische Auswertungen zum Immobilienmarkt</h2>
+    <p>Klicken Sie auf eine Grafik, um sie groß in einem neuen Tab zu öffnen.</p>
+
+    <div class="stats-grid">
+
+      <a href="{{ url_for('static', filename='img/Häufigkeitsverteilungen 1.png') }}" target="_blank">
+        <img src="{{ url_for('static', filename='img/Häufigkeitsverteilungen 1.png') }}" alt="Eigenschaften der Immobilien">
+      </a>
+
+      <a href="{{ url_for('static', filename='img/Häufigkeitsverteilungen 2.png') }}" target="_blank">
+        <img src="{{ url_for('static', filename='img/Häufigkeitsverteilungen 2.png') }}" alt="Heizungsart und Zustand">
+      </a>
+
+      <a href="{{ url_for('static', filename='img/Top 10 teuerste vs. günstigste Landkreise.png') }}" target="_blank">
+        <img src="{{ url_for('static', filename='img/Top 10 teuerste vs. günstigste Landkreise.png') }}" alt="Top Landkreise">
+      </a>
+
+      <a href="{{ url_for('static', filename='img/Top 15 Landkreise nach Inseratanzahl.png') }}" target="_blank">
+        <img src="{{ url_for('static', filename='img/Top 15 Landkreise nach Inseratanzahl.png') }}" alt="Top 15 Landkreise">
+      </a>
+
+      <a href="{{ url_for('static', filename='img/Verteilung anzahl der wohnung 1.png') }}" target="_blank">
+        <img src="{{ url_for('static', filename='img/Verteilung anzahl der wohnung 1.png') }}" alt="Wohnfläche und Zimmeranzahl">
+      </a>
+
+      <a href="{{ url_for('static', filename='img/Verteilung anzahl der wohnung 2.png') }}" target="_blank">
+        <img src="{{ url_for('static', filename='img/Verteilung anzahl der wohnung 2.png') }}" alt="Baujahr und Kaufpreis">
+      </a>
+
+    </div>
+  </div>
+
+</section>
 
 
-<h2>Immobilienmarkt verstehen</h2>
+    <h2 style="margin-top: 60px;">
+      Warum sind solche Informationen wichtig?
+    </h2>
 
-<p>
-  In diesem Bereich können später Diagramme, Tabellen oder kurze Auswertungen
-  eingefügt werden. Zum Beispiel:
-</p>
+    <p>
+      Wer eine Immobilie kaufen, verkaufen oder bewerten möchte, sollte den Markt
+      möglichst gut verstehen. Statistische Daten können dabei helfen, realistische
+      Erwartungen zu entwickeln und bessere Entscheidungen zu treffen.
+    </p>
 
-<ul>
-  <li>Durchschnittliche Immobilienpreise nach Region</li>
-  <li>Preisentwicklung in den letzten Jahren</li>
-  <li>Vergleich zwischen verschiedenen Stadtteilen</li>
-  <li>Unterschiede zwischen Wohnungen und Häusern</li>
-  <li>Einfluss der Wohnfläche auf den geschätzten Preis</li>
-</ul>
+    <p>
+      Der Preisrechner von HOKY Immobilien bietet eine erste Orientierung.
+      Die Informationen auf dieser Seite sollen diese Einschätzung ergänzen und
+      den Immobilienmarkt verständlicher machen.
+    </p>
 
-<h2>Warum sind solche Informationen wichtig?</h2>
-
-<p>
-  Wer eine Immobilie kaufen, verkaufen oder bewerten möchte, sollte den Markt
-  möglichst gut verstehen. Statistische Daten können dabei helfen, realistische
-  Erwartungen zu entwickeln und bessere Entscheidungen zu treffen.
-</p>
-
-<p>
-  Der Preisrechner von HOKY Immobilien bietet eine erste Orientierung.
-  Die Informationen auf dieser Seite sollen diese Einschätzung ergänzen und
-  den Immobilienmarkt verständlicher machen.
-</p>
-
-</div>
+  </div>
 
 </section>
 

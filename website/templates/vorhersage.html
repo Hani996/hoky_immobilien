@@ -171,6 +171,12 @@
                     </div>
                 `;
                 resultDiv.style.display = 'block';
+
+                resultDiv.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'center'
+                  });
+                  
             } else {
                 priceDisplay.innerText = 'Fehler bei der Berechnung.';
                 resultDiv.style.display = 'block';
@@ -179,6 +185,7 @@
             console.error('Error:', error);
         }
     });
+    
   </script>
 </body>
 </html>
